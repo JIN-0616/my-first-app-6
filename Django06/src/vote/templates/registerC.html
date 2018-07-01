@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>{{name}}의 답변 생성</h1>
+	{% if error %}
+		<p><b>{{error}}</b></p>
+	{% endif %}
+	<!-- action=""하면 다시 그페이지를 불러오게됨 -->
+	<form action="" method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="등록"/>
+	<br><br>
+	<a href="{% url 'vote:index' %}">메인페이지로 이동</a>
+	</form>
+</body>
+</html>

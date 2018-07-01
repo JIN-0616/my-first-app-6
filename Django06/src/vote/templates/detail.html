@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{{ question.question_text }}</title>
+</head>
+<body>
+	<!-- { % : 파이썬 문법 사용  { { : 해당 영역에 데이터를 입력 -->
+	<!-- Question 객체 안에있는 question_text값을 입력 -->
+	<h1>{{ question.question_text }}</h1>
+	<h3>작성자 : {{ question.auther.username }}</h3>
+	<!-- <form action="/vote/{ {question.id} }/" method="POST"> -->
+	<form action="{% url 'vote:vote' question.id %}" method="POST">
+		<!-- 해당 폼이 유효한 폼인지, 다른 클라이언트에서 접근하지 못하도록
+			 자동발급하는 일회용 키 Django 다른클라이언트에서 접근하려면 뺌-->
+		{% csrf_token %} 		
+		<!-- question.choice_set.all : Question 객체에 엮여있는
+			choice 객체들을 리스트형태로 반환 -->
+		{% for choice in question.choice_set.all %}
+			<input type="radio" name="choice" value="{{ choice.id }}"
+			id="choice{{forLoop.counter}}">
+			<label for="choice{{forLoop.counter}}">{{ choice.choice_text }}</label>
+			{% if question.auther.username == user.username %}
+			<a href="{% url 'vote:deleteC' choice.id %}">삭제</a>
+			{% endif %}
+		{% endfor %}
+		<input type="submit" value="투표"/>
+	</form>
+	<!-- detail.html, result.html -->
+	<!-- <a>태그를 이용해 메인페이지로 돌아가는 링크 만들기 -->
+	<!-- result.html -->
+	<!-- <a>태그를 이용해 '다시투표하기' 링크 생성,
+		클릭시 해당 질문의 detail.html로 전환 -->
+	<a href="{% url 'vote:index' %}">메인페이지로 이동</a>
+	<br><br>
+	{% if question.auther.username == user.username %}
+		<a href="{% url 'vote:deleteQ' question.id %}">글 삭제</a>
+		<a href="{% url 'vote:updateQ' question.id %}">글 수정</a>
+		<a href="{% url 'vote:registerC' question.id %}">답변 등록</a>
+	{% endif %}
+</body>
+</html>

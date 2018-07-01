@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>설문조사</title>
+</head>
+<body>
+	<!-- 로그인 여부에 따른 링크 보여주기 -->
+	<!-- 탬플릿에서 로그인 여부확인시 user 변수를 이용함 -->
+	<!-- 로그인된 유저의 ID를 추출: user.username -->
+	<!-- 로그인 여부 확인 : user.is_authenticated-> True,False반환 -->
+	{% if user.is_authenticated %}
+		<p>{{user.username}}님 환영합니다</p>
+		<a href="{% url 'customlogin:logout' %}">로그아웃</a>
+	{% else %}
+		<a href="{% url 'customlogin:signup' %}">회원가입</a>
+		<a href="{% url 'customlogin:signin' %}">로그인</a>
+		<br> <!-- 엔터 -->
+	{% endif %}
+		<a href="{% url 'Blog:index' %}">블로그 어플리케이션</a>
+	<hr> <!-- 가로로 줄긋기 -->
+	<!-- 강제로그아웃 url옆 버튼 쿠키 삭제 -->
+	<!-- HTML파일에서 파이썬 코드를 삽입할 수 있음
+		for ~ in, if문, django에서 만든 함수 사용 가능  -->
+	<!-- 단, 함수를 사용할 때 소괄호 생략
+	ex) 파이썬 코드 : Question.objects.all()
+		HTML내의 파이썬 코드 : Qustion.onjects.all -->
+	<!-- 결론적으로 HTML코드에서는 매개변수가 없는 함수만 사용가능 -->
+	<!-- index 뷰 함수에서 question_list에 넣은 값을 변수처럼 사용 -->
+	{% for question in question_list %}
+		<!-- url '문자열' 해당url에 필요한값 (스페이스기준) -->
+		<a href="{% url 'vote:detail' question.id %}"><h3>{{question.question_text}}</h3></a>
+		<br> <!-- for문내부 반복됨, <br>:한줄 띄우기 -->
+	{% endfor %}
+	<!-- if 사용시 endif로 영역 지정
+		 for문 사용시 endfor로 영역 지정 -->
+	<br>
+	<a href="{% url 'vote:registerQ' %}">질문등록하기</a>
+	{# {{ question.question_id }} #}
+	{% comment "optional nate" %}
+		<p>commented out text here</p>
+	{% endcomment %}
+
+</body>
