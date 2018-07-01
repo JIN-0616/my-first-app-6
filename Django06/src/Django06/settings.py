@@ -55,9 +55,9 @@ AUTHENTICATION_BACKENDS=(
 SECRET_KEY = 'ktd%*cevwbufmcg%038u=f0odekd(mp1g4-i9j@=@0j15$i5^d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','[::1]','.pythonanywhere.com']
 
 
 # Application definition
